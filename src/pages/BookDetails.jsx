@@ -7,7 +7,7 @@ const BookDetails = () => {
   const [book, setBook] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/books/${id}`)
+    axios.get(`https://book-library-be-z5om.onrender.com/books/${id}`)
       .then(res => {
         setBook(res.data);
       })

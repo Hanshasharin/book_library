@@ -19,7 +19,7 @@ const BookLibrary = () => {
   });
 
    const getBooks = () => {
-    axios.get('http://localhost:3000/books')
+    axios.get('https://book-library-be-z5om.onrender.com/books')
       .then((res) => setBooks(res.data))
       .catch((err) => console.error(err));
 
@@ -41,7 +41,7 @@ const addBook = (event)=>{
     // if (!newBook.title || !newBook.image || !newBook.author || !newBook.rating || !newBook.year) {
     // alert("Please fill in all the fields");}
 
-  axios.post("http://localhost:3000/create",newBook)
+  axios.post("https://book-library-be-z5om.onrender.com/create",newBook)
   .then(res=>{console.log(res.data);
     getBooks()
      setNewBook({

@@ -5,8 +5,10 @@ import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const BookCard = (props) => {
+   const navigate = useNavigate();
 const[show,setShow] = useState(false)
 const [rating,setRating] = useState(props.books.rating)
   const handleShow = ()=>{
@@ -20,17 +22,24 @@ const handleClose = ()=>{
     setShow(false)
   }
   const submitRating=()=>{
-// const token = localStorage.getItem("access_token")
-// const header =  {
-//   "Authorization" : `Bearer ${token}`
+ const token = localStorage.getItem("access_token")
 
-// }
+   if (!token || token === "null") {
+      alert("Please log in to rate books.");
+      navigate("/login"); // ✅ redirect to login page
+      return;
+    }
 
-axios.put('http://localhost:3000/rating', { rating : rating , id:props.books._id})
-  // {headers:header}) 
+
+ const header =  {
+   "Authorization" : `Bearer ${token}`
+ }
+
+axios.put('https://book-library-be-z5om.onrender.com/rating', { rating : rating , id:props.books._id},
+   {headers:header}) 
     .then(res => {
       console.log("Server response:", res.data);
-          axios('http://localhost:3000/books')
+          axios('https://book-library-be-z5om.onrender.com/books')
       handleClose()
     })
     .catch(err => {
@@ -46,7 +55,7 @@ setRating(event.target.value)
   
   const deleteBook = () => {
   alert("delete");
-  axios.delete("http://localhost:3000/delete?id=" + props.books._id)
+  axios.delete("https://book-library-be-z5om.onrender.com/delete?id=" + props.books._id)
     .then(res => {
       console.log(res.data);
             window.location.reload(); // 🔄 simple reload to refresh book list
@@ -97,7 +106,7 @@ setRating(event.target.value)
           <div>
           <input type="number" max={5} min={1} value={rating} onChange={ratingChange} />
           <button onClick={submitRating}>submit</button>
-          {/* <p>{rating}</p> */}
+          <p>{rating}</p>
         </div>
         </Modal.Body>
         <Modal.Footer>
